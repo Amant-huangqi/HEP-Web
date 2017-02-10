@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.hep.dao.RecruitmentDao">
+
+	<insert id="insertEmployerData" parameterType="com.hep.model.EmployerData">
+		insert into
+		employerdata
+		(type, functions,detail,
+		claim,wage,addressa,population,area,employer,telphone,baby1birthday,baby2birthday,time)
+		values (#{type},#{functions},#{detail},
+		#{claim},#{wage},#{address},#{population},#{area},#{employer},#{telphone},#{baby1birthday},#{baby2birthday},#{time})
+	</insert>
+
+	<select id="selectAllRecruitmentData" resultType="com.hep.dto.EmployerShowData">
+		SELECT * FROM
+		employerdata
+	</select>
+
+	<select id="selectAllRecruitmentDataLimit" resultType="com.hep.dto.EmployerShowData">
+		SELECT * FROM employerdata
+		<where>
+			<if test="online != null and online != ''">
+				online =#{online}
+			</if>
+			<if test="struts != null and struts != ''">
+				AND struts =#{struts}
+			</if>
+
+		</where>
+	</select>
+
+	<select id="searchNannyInformation" resultType="com.hep.dto.EmployerShowData">
+		SELECT
+		id,type,functions,detail,claim,wage,addressa,population,area,employer,telphone,baby1birthday,baby2birthday,time,struts,online
+		FROM employerdata
+		<where>
+			<if test="job != null and job != ''">
+				type =#{job}
+			</if>
+			<if test="wage_up != null and wage_up != ''">
+				AND CONVERT(wage,DECIMAL(10,2)) &gt;=#{wage_up}
+			</if>
+			<if test="wage_on != null and wage_on != ''">
+				AND CONVERT(wage,DECIMAL(10,2)) &lt;=#{wage_on}
+			</if>
+
+			<if test="skill != null and skill != ''">
+				AND functions =#{skill}
+			</if>
+
+			<if test="wage != null and wage != ''">
+				AND wage =#{wage}
+			</if>
+
+		</where>
+	</select>
+	
+	<select id="searchNannyInformationLimit" resultType="com.hep.dto.EmployerShowData">
+		SELECT
+		id,type,functions,detail,claim,wage,addressa,population,area,employer,telphone,baby1birthday,baby2birthday,time,struts,online
+		FROM employerdata
+		<where>
+			<if test="job != null and job != ''">
+				type =#{job}
+			</if>
+			<if test="wage_up != null and wage_up != ''">
+				AND CONVERT(wage,DECIMAL(10,2)) &gt;=#{wage_up}
+			</if>
+			<if test="wage_on != null and wage_on != ''">
+				AND CONVERT(wage,DECIMAL(10,2)) &lt;=#{wage_on}
+			</if>
+
+			<if test="skill != null and skill != ''">
+				AND functions =#{skill}
+			</if>
+
+			<if test="wage != null and wage != ''">
+				AND wage =#{wage}
+			</if>
+			
+			<if test="online != null and online != ''">
+				AND online =#{online}
+			</if>
+			<if test="struts != null and struts != ''">
+				AND struts =#{struts}
+			</if>
+
+		</where>
+	</select>
+
+	<select id="recruitmentDetailedInformation" resultType="com.hep.dto.EmployerShowData">
+		SELECT *
+		FROM employerdata WHERE id =#{id}
+	</select>
+
+	<update id="changeRecruitmentInformation" parameterType="com.hep.dto.ChangeData">
+		UPDATE
+		employerdata
+		SET
+		struts = #{struts} WHERE id = #{id}
+	</update>
+
+	<update id="onlineRecruitmentInformation" parameterType="com.hep.dto.ChangeData">
+		UPDATE
+		employerdata
+		SET
+		online = #{struts} WHERE id = #{id}
+	</update>
+
+</mapper> 

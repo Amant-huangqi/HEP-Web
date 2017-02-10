@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="com.hep.dao.NannyDao">
+
+	<insert id="insert" parameterType="com.hep.model.NursemaidData">
+		insert into nursemaiddata
+		(name, census,nonresident,
+		IDNumber,telphone,type,functions,education,faith,matr,partya,height,weight,language,honor,speciality,
+		intention,experience, wage,scope,image,photo,inserttime,age)
+		values
+		(#{name},#{census},#{nonResident},
+		#{idnumber},#{telphone},#{type},#{functions},#{education},#{faith},#{marriage},#{party},#{height},#{weight},#{language},#{honor},
+		#{speciality},#{intention},#{experience}, #{wage}, #{range}, #{image},
+		#{photo}, #{time}, #{age})
+	</insert>
+
+	<select id="selectAllNannyData" resultType="com.hep.dto.NursemaidShowData">
+		SELECT
+		id,struts,inserttime,name,census,nonResident,idnumber,type,functions,education,wage,telphone,image,age,online
+		FROM nursemaiddata
+	</select>
+
+	<select id="selectAllNannyDataLimit" resultType="com.hep.dto.NursemaidShowData">
+		SELECT
+		id,struts,inserttime,name,census,nonResident,idnumber,type,functions,education,wage,telphone,image,age,online
+		FROM nursemaiddata
+		<where>
+			<if test="online != null and online != ''">
+				online =#{online}
+			</if>
+			<if test="struts != null and struts != ''">
+				AND struts =#{struts}
+			</if>
+
+		</where>
+	</select>
+
+	<select id="searchNannyInformation" resultType="com.hep.dto.NursemaidShowData">
+		SELECT
+		id,struts,inserttime,name,census,nonResident,idnumber,type,functions,education,wage,telphone,age,online,image
+		FROM nursemaiddata
+		<where>
+			<if test="job != null and job != ''">
+				type =#{job}
+			</if>
+			<if test="age_up != null and age_up != ''">
+				AND CONVERT(age,DECIMAL(10,2)) &gt;=#{age_up}
+			</if>
+			<if test="age_on != null and age_on != ''">
+				AND CONVERT(age,DECIMAL(10,2)) &lt;=#{age_on}
+			</if>
+
+			<if test="skill != null and skill != ''">
+				AND functions =#{skill}
+			</if>
+
+			<if test="online != null and online != ''">
+				AND online =#{online}
+			</if>
+			<if test="struts != null and struts != ''">
+				AND struts =#{struts}
+			</if>
+
+		</where>
+	</select>
+
+	<select id="searchNannyInformationLimit" resultType="com.hep.dto.NursemaidShowData">
+		SELECT
+		id,struts,inserttime,name,census,nonResident,idnumber,type,functions,education,wage,telphone,age,online,image
+		FROM nursemaiddata
+		<where>
+			<if test="job != null and job != ''">
+				type =#{job}
+			</if>
+			<if test="age_up != null and age_up != ''">
+				AND CONVERT(age,DECIMAL(10,2)) &gt;=#{age_up}
+			</if>
+			<if test="age_on != null and age_on != ''">
+				AND CONVERT(age,DECIMAL(10,2)) &lt;=#{age_on}
+			</if>
+
+			<if test="skill != null and skill != ''">
+				AND functions =#{skill}
+			</if>
+
+		</where>
+	</select>
+
+	<select id="nannyDetailInformation" resultType="com.hep.dto.NannyDetailedShowData">
+		SELECT
+		*
+		FROM
+		nursemaiddata WHERE id =#{id}
+	</select>
+
+	<update id="changeNannyInformation" parameterType="com.hep.dto.ChangeData">
+		UPDATE
+		nursemaiddata
+		SET
+		struts = #{struts} WHERE id = #{id}
+	</update>
+
+	<update id="onlineNannyInformation" parameterType="com.hep.dto.ChangeData">
+		UPDATE
+		nursemaiddata
+		SET
+		online = #{struts} WHERE id = #{id}
+	</update>
+
+</mapper> 
